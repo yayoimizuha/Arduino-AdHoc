@@ -52,7 +52,7 @@ void setup() {
                     //error
                     continue;
                 } else {
-                    addresses[i] = String(receive_txt).substring(16).toInt();
+                    addresses[i] = static_cast<int>(String(receive_txt).substring(16).toInt());
                     got_address++;
                 }
             }
