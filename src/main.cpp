@@ -2,14 +2,12 @@
 #include <MultiUART.h>
 
 
-#define DELAY 100
 #define MACHINE_NUMBER 1
 #define CONNECTED_DEVICES 3
 
 MultiUART *devices[CONNECTED_DEVICES];
 
 static_assert(CONNECTED_DEVICES <= 4, "Devices are too much.");
-//static_assert(MACHINE_NUMBER > 0 && MACHINE_NUMBER < 10, "MACHINE_NUMBER must be 1 digit.");
 
 constexpr uint_fast8_t PinList[CONNECTED_DEVICES][2] = {
         {2, 3},
@@ -18,10 +16,6 @@ constexpr uint_fast8_t PinList[CONNECTED_DEVICES][2] = {
 };
 static volatile char buffer[CONNECTED_DEVICES][256];
 int addresses[CONNECTED_DEVICES];
-
-String receive_text(MultiUART port);
-
-String send_text(MultiUART port);
 
 void sleep(double time);
 
@@ -96,17 +90,19 @@ void loop() {
                         call_forward = true;
                     }
                 }
-                auto determinate = false;
-                uint_fast8_t call_forward_addr = 0;
-                while (!determinate) {
-                    call_forward = random(0, CONNECTED_DEVICES - 1);
-                    if (call_forward == i) {
-                        continue;
-                    } else {
-                        determinate = true;
+                if (!call_forward) {
+                    auto determinate = false;
+                    uint_fast8_t call_forward_addr;
+                    while (!determinate) {
+                        call_forward_addr = random(0, CONNECTED_DEVICES - 1);
+                        if (call_forward_addr == i) {
+                            continue;
+                        } else {
+                            determinate = true;
+                        }
                     }
+                    devices[call_forward_addr]->write((String(receive_txt) + '\0').c_str());
                 }
-                devices[call_forward_addr]->write((String(receive_txt) + '\0').c_str());
             }
         }
     }
