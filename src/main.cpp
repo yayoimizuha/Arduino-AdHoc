@@ -89,12 +89,24 @@ void loop() {
                 Serial.println(String(receive_txt).substring(num_order));
                 //Print text
             } else {
+                bool call_forward = false;
                 for (int j = 0; j < CONNECTED_DEVICES; ++j) {
                     if (addresses[j] == dest_device_id) {
                         devices[j]->write((String(receive_txt) + '\0').c_str());
-                        break;
+                        call_forward = true;
                     }
                 }
+                auto determinate = false;
+                uint_fast8_t call_forward_addr = 0;
+                while (!determinate) {
+                    call_forward = random(0, CONNECTED_DEVICES - 1);
+                    if (call_forward == i) {
+                        continue;
+                    } else {
+                        determinate = true;
+                    }
+                }
+                devices[call_forward_addr]->write((String(receive_txt) + '\0').c_str());
             }
         }
     }
