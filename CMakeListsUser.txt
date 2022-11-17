@@ -1,1 +1,2 @@
 include_directories(.pio/libdeps/uno/MultiUART/src)
+include_directories(.pio/libdeps/uno/ArduinoSTL/src)
