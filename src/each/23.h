@@ -2,7 +2,6 @@
 
 #define DEVICE_ADDR 23
 #define CONNECTED_DEVICES 3
-#define COMM_FREQ 2400
 
 constexpr uint_fast8_t PinList[CONNECTED_DEVICES][2] = {
 // { TX , RX }

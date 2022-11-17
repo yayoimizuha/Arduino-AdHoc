@@ -1,6 +1,5 @@
 #include<Arduino.h>
 #include <MultiUART.h>
-#include <vector>
 #include <string>
 
 //#include "each/16.h"
@@ -8,6 +7,7 @@
 //#include "each/45.h"
 #include "each/87.h"
 
+#define COMM_FREQ 9600
 using namespace std;
 typedef bool flag;
 
@@ -67,7 +67,7 @@ __attribute__((unused)) void setup() {
                 char *txt = (char *) malloc(sizeof(char));
                 uint_fast8_t txt_len = 0;
                 while (devices[i]->available() != 0) {
-                    txt[txt_len] = devices[i]->read();
+                    txt[txt_len] = static_cast<char>(devices[i]->read());
 #ifdef DISPLAY_AVAILABLE
                     Serial.print(txt[txt_len]);
 #endif
